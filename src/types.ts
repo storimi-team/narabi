@@ -43,5 +43,5 @@ export type QueueHandler<T, E extends BaseEnv> = (
  */
 export interface QueueHandlerInstance<E extends BaseEnv> {
   on: <T>(queueName: string, handler: QueueHandler<T, E>) => void;
-  handle: (batch: MessageBatch, env: E) => Promise<void>;
+  queue: (batch: MessageBatch, env: E) => Promise<void>;
 }

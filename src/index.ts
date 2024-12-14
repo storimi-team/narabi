@@ -7,4 +7,4 @@ export type {
   QueueHandlerInstance,
 } from "./types";
 
-export { createQueueHandler } from "./queue-handler";
+export { createNarabiApp } from "./narabi";

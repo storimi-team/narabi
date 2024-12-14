@@ -6,11 +6,9 @@ import type {
 } from "./types";
 
 /**
- * Creates a new queue handler instance
+ * Creates a new narabi app
  */
-export function createQueueHandler<
-  E extends BaseEnv
->(): QueueHandlerInstance<E> {
+export function createNarabiApp<E extends BaseEnv>(): QueueHandlerInstance<E> {
   type HandlerMap = {
     [K: string]: QueueHandler<unknown, E>;
   };
@@ -27,7 +25,7 @@ export function createQueueHandler<
     /**
      * Handle incoming message batch
      */
-    async handle(batch: MessageBatch, env: E) {
+    async queue(batch: MessageBatch, env: E) {
       const queueBase = batch.queue.replace(`-${env.ENV_TYPE}`, "");
       const handler = handlers[queueBase];
 

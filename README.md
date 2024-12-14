@@ -11,7 +11,7 @@ npm install narabi
 ## Usage
 
 ```typescript
-import { createQueueHandler } from 'narabi';
+import { createNarabiApp } from "narabi";
 
 interface MyEnv {
   ENV_TYPE: string;
@@ -19,10 +19,10 @@ interface MyEnv {
 }
 
 // Create a queue handler with your environment type
-const queue = createQueueHandler<MyEnv>();
+const app = createNarabiApp<MyEnv>();
 
 // Register handlers for different queues
-queue.on<{ userId: string }>('process-user', async (c) => {
+queue.on<{ userId: string }>("process-user", async (c) => {
   const { body } = c.message;
   const { MY_SECRET } = c.env;
   // Handle message
@@ -30,8 +30,7 @@ queue.on<{ userId: string }>('process-user', async (c) => {
 
 // Export your worker
 export default {
-  fetch: app.fetch,
-  queue: queue.handle,
+  queue: app.queue,
 };
 ```
 

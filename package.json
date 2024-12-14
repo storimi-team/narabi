@@ -1,6 +1,6 @@
 {
   "name": "narabi",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Elegant queue handling for Cloudflare Workers",
   "type": "module",
   "main": "./dist/index.js",

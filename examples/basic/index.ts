@@ -1,4 +1,4 @@
-import { createQueueHandler } from "narabi";
+import { createNarabiApp } from "narabi";
 
 // Define your environment type
 interface Env {
@@ -22,10 +22,10 @@ interface EmailNotificationEvent {
 }
 
 // Create queue handler with your environment type
-const queue = createQueueHandler<Env>();
+const app = createNarabiApp<Env>();
 
 // Register handler for user creation events
-queue.on<UserCreatedEvent>("user-created", async (c) => {
+app.on<UserCreatedEvent>("user-created", async (c) => {
   const { userId, email } = c.message.body;
   const { DB } = c.env;
 
@@ -36,7 +36,7 @@ queue.on<UserCreatedEvent>("user-created", async (c) => {
 });
 
 // Register handler for email notifications
-queue.on<EmailNotificationEvent>("send-email", async (c) => {
+app.on<EmailNotificationEvent>("send-email", async (c) => {
   const { to, subject, body } = c.message.body;
   const { API_KEY } = c.env;
 
@@ -59,7 +59,7 @@ export default {
   },
 
   // Queue handler
-  queue: queue.handle,
+  queue: app.queue,
 };
 
 // Example of how to publish messages (in your API routes)
