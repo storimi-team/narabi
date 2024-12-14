@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { createQueueHandler } from "../src";
 import {
   TestEnv,
@@ -136,15 +136,28 @@ describe("Queue Handler", () => {
     expect(mockHandler2).toHaveBeenCalledTimes(1);
   });
 
-  it("should warn when overwriting an existing handler", async () => {
-    const queue = createQueueHandler<TestEnv>();
-    const consoleSpy = vi.spyOn(console, "warn");
+  describe("handler registration", () => {
+    let consoleSpy: ReturnType<typeof vi.spyOn>;
 
-    queue.on<TestMessage>("test-queue", vi.fn());
-    queue.on<TestMessage>("test-queue", vi.fn());
+    beforeEach(() => {
+      consoleSpy = vi.spyOn(console, "warn");
+      consoleSpy.mockClear();
+    });
 
-    expect(consoleSpy).toHaveBeenCalledWith(
-      'Handler for queue "test-queue" is being overwritten'
-    );
+    afterEach(() => {
+      consoleSpy.mockRestore();
+    });
+    
+    it("should warn when overwriting an existing handler", async () => {
+      const queue = createQueueHandler<TestEnv>();
+      const consoleSpy = vi.spyOn(console, "warn");
+
+      queue.on<TestMessage>("test-queue", vi.fn());
+      queue.on<TestMessage>("test-queue", vi.fn());
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Handler for queue "test-queue" is being overwritten'
+      );
+    });
   });
 });

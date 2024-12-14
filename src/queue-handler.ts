@@ -11,17 +11,17 @@ import type {
 export function createQueueHandler<
   E extends BaseEnv
 >(): QueueHandlerInstance<E> {
-  const handlers: Record<string, QueueHandler<any, E>> = {};
+  type HandlerMap = {
+    [K: string]: QueueHandler<unknown, E>;
+  };
+  const handlers: HandlerMap = {};
 
   return {
-    /**
-     * Register a handler for a specific queue
-     */
     on<T>(queueName: string, handler: QueueHandler<T, E>) {
       if (handlers[queueName]) {
         console.warn(`Handler for queue "${queueName}" is being overwritten`);
       }
-      handlers[queueName] = handler;
+      handlers[queueName] = handler as QueueHandler<unknown, E>;
     },
 
     /**
